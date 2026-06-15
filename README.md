@@ -1,3 +1,3 @@
-## ♿️ Wheelie
+# ♿️ Wheelie
 
-An app to gamify Wheelchair Location improvement for United Regional.
+An app to gamify Wheelchair Location improvement.
