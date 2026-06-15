@@ -1,37 +1,9 @@
-'use client'
-
-import { useRouter, useSearchParams } from 'next/navigation'
+import { Suspense } from 'react'
 
 export default function WrongAreaPage() {
-  const searchParams = useSearchParams()
-  const currentArea = searchParams.get('currentarea')
-  const correctArea = searchParams.get('correctarea')
-
-  const router = useRouter()
-
   return (
-    <div>
-      <div className="h-full text-center pt-24 flex align-middle flex-col">
-        <h1 className="font-bold text-3xl">Oops, wrong area!</h1>
-
-        <p className="opacity-75 text-lg mx-4">
-          Please check the wheelchair area to ensure it is correct.{' '}
-          <a href="#" className="underline">
-            Need help?
-          </a>
-        </p>
-
-        <h2 className="font-bold text-xl mx-12 mt-12">
-          You're at {currentArea}. This wheelchair belongs to {correctArea}.
-        </h2>
-
-        <button
-          className="mt-12 p-2 border-2 border-white rounded-2xl bg-white text-black hover:bg-transparent transition duration-0.5s hover:text-white hover:cursor-pointer mx-12"
-          onClick={() => router.push('/wheelchair')}
-        >
-          <p>Scan another</p>
-        </button>
-      </div>
-    </div>
+    <Suspense
+      fallback={<p className="text-center mt-24">Loading...</p>}
+    ></Suspense>
   )
 }
