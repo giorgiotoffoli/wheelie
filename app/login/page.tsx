@@ -1,18 +1,14 @@
 'use client'
 
-import { BarcodeScanner } from '@thewirv/react-barcode-scanner'
-import { useEffect } from 'react'
+import { Scanner } from '@yudiel/react-qr-scanner'
+import { useEffect, useState } from 'react'
 import { useAuth } from '../provider'
 import { useRouter } from 'next/navigation'
-
-const scannerStyle: React.CSSProperties = {
-  height: '12px',
-  width: '100%',
-}
 
 export default function LoginPage() {
   const { user, login } = useAuth()
   const router = useRouter()
+  const [paused, setPaused] = useState(false)
 
   useEffect(() => {
     if (user) {
@@ -21,30 +17,48 @@ export default function LoginPage() {
   }, [user, router])
 
   return (
-    <div className="flex flex-col justify-between mx-4 mt-24">
+    <div className="flex flex-col items-center mx-4 mt-24">
       <h1 className="text-2xl font-bold text-center">
         Good morning, please scan your badge to log in
       </h1>
-      <div className="mt-24">
-        <BarcodeScanner
-          onSuccess={(badgeId) => login(badgeId)}
-          onError={() => console.log("Can't read it")}
-          // Styling
-          containerStyle={{
-            width: '100%',
-            maxWidth: '350px',
-            height: '150px',
-            margin: '0 auto',
-            overflow: 'hidden',
+
+      <div className="mt-12 w-full max-w-xl h-40 overflow-hidden rounded-2xl">
+        <Scanner
+          formats={[
+            'code_128',
+            'code_39',
+            'code_93',
+            'ean_13',
+            'ean_8',
+            'upc_a',
+            'upc_e',
+          ]}
+          constraints={{
+            facingMode: 'environment',
           }}
-          videoContainerStyle={{
-            width: '100%',
-            height: '100%',
+          paused={paused}
+          onScan={(results) => {
+            const badgeId = results[0]?.rawValue
+
+            if (!badgeId) return
+
+            setPaused(true)
+            login(badgeId)
+            router.replace('/')
           }}
-          videoStyle={{
-            width: '100%',
-            height: '100%',
-            objectFit: 'cover',
+          onError={(error) => {
+            console.log("Can't read it", error)
+          }}
+          styles={{
+            container: {
+              width: '100%',
+              height: '100%',
+            },
+            video: {
+              width: '100%',
+              height: '100%',
+              objectFit: 'cover',
+            },
           }}
         />
       </div>
