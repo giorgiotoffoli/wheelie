@@ -1,11 +1,14 @@
 'use client'
 
-import { redirect, useSearchParams } from 'next/navigation'
+import { useRouter, useSearchParams } from 'next/navigation'
 
 export default function WrongAreaPage() {
   const searchParams = useSearchParams()
   const currentArea = searchParams.get('currentarea')
   const correctArea = searchParams.get('correctarea')
+
+  const router = useRouter()
+
   return (
     <div>
       <div className="h-full text-center pt-24 flex align-middle flex-col">
@@ -24,7 +27,7 @@ export default function WrongAreaPage() {
 
         <button
           className="mt-12 p-2 border-2 border-white rounded-2xl bg-white text-black hover:bg-transparent transition duration-0.5s hover:text-white hover:cursor-pointer mx-12"
-          onClick={() => redirect('/wheelchair')}
+          onClick={() => router.push('/wheelchair')}
         >
           <p>Scan another</p>
         </button>
