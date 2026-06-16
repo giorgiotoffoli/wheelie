@@ -16,7 +16,7 @@ export default function WheelchairCard({
     <div className="rounded-4xl border border-white/10 bg-white/4 p-4 shadow-2xl">
       <div className="flex gap-4">
         <div className={compact ? 'h-28 w-28' : 'h-40 w-40'}>
-          <WheelchairViewer />
+          <WheelchairViewer isWheelchairPage={false} />
         </div>
 
         <div className="h-24 w-px bg-white/10" />

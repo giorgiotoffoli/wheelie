@@ -5,9 +5,15 @@ import { OrbitControls, Center } from '@react-three/drei'
 import { Suspense } from 'react'
 import WheelchairModel from './wheelchair-model'
 
-export default function WheelchairViewer() {
+interface WheelchairViewerProps {
+  isWheelchairPage: boolean
+}
+
+export default function WheelchairViewer({
+  isWheelchairPage,
+}: WheelchairViewerProps) {
   return (
-    <div className="w-full h-[130px] rounded-2xl">
+    <div className="w-full h-[130px] rounded-2xl relative bottom-1 left-1.5">
       <Canvas
         camera={{
           position: [0, 0, 170],
@@ -32,10 +38,11 @@ export default function WheelchairViewer() {
 
         <OrbitControls
           enableZoom={false}
-          enablePan={true}
-          // Allows only up/down tilt
-          minPolarAngle={Math.PI / 2.5}
-          maxPolarAngle={Math.PI / 2.5}
+          enablePan={!isWheelchairPage}
+          minPolarAngle={isWheelchairPage ? Math.PI / 2.5 : Math.PI / 2.5}
+          maxPolarAngle={isWheelchairPage ? Math.PI / 2.5 : Math.PI / 2.5}
+          minAzimuthAngle={isWheelchairPage ? Math.PI / 1.75 : -Math.PI}
+          maxAzimuthAngle={isWheelchairPage ? Math.PI / 1.75 : Math.PI}
         />
       </Canvas>
     </div>

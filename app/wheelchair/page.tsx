@@ -4,6 +4,7 @@ import { MOCK_USER, MOCK_WHEELCHAIR } from '@/app/mock-data'
 import { useAuth } from '@/app/provider'
 import ScannerBox from '@/components/scannerbox'
 import WheelchairCard from '@/components/wheelchair/wheelchair-card'
+import WheelchairViewer from '@/components/wheelchair/wheelchair-viewer'
 import { CircleQuestionMarkIcon } from 'lucide-react'
 import { useRouter } from 'next/navigation'
 
@@ -28,6 +29,13 @@ export default function WheelchairScanPage() {
           Logged in as Badge •••{badgeEnding}
         </p>
 
+        <span className="relative flex size-3 left-51 top-12 z-10">
+          <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-red-400/75"></span>
+          <span className="relative inline-flex size-3 rounded-full bg-red-500/80"></span>
+        </span>
+
+        <WheelchairViewer isWheelchairPage={true} />
+
         <section>
           <ScannerBox
             mode="qr"
@@ -48,13 +56,6 @@ export default function WheelchairScanPage() {
           <p className="mt-2 max-w-sm text-base leading-relaxed text-white/55">
             Point your camera at the QR label attached to the chair.
           </p>
-        </section>
-
-        <section className="mt-4">
-          <WheelchairCard
-            wheelchairId={MOCK_WHEELCHAIR.name}
-            correctArea={MOCK_WHEELCHAIR.modelNumber}
-          />
         </section>
 
         <div className="flex justify-center items-center gap-2 mt-6">
