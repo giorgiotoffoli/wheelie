@@ -1,24 +1,31 @@
 'use client'
 
-import { MOCK_USER, MOCK_WHEELCHAIR } from '@/app/mock-data'
-import { useAuth } from '@/app/provider'
+import { useRouter } from 'next/navigation'
+import { useAuth } from '../provider'
+import { MOCK_USER, MOCK_WHEELCHAIR } from '../mock-data'
 import ScannerBox from '@/components/scannerbox'
 import WheelchairCard from '@/components/wheelchair/wheelchair-card'
-import { CircleQuestionMarkIcon } from 'lucide-react'
-import { useRouter } from 'next/navigation'
+import { InfoIcon } from 'lucide-react'
 
-export default function WheelchairScanPage() {
+function normalize(value: string) {
+  return value.trim().toLowerCase().replaceAll('-', ' ')
+}
+
+export default function AreaScanPage() {
   const router = useRouter()
   const { user } = useAuth()
 
   const badgeId = user?.badgeId ?? MOCK_USER.badgeId
   const badgeEnding = badgeId.slice(-4)
 
-  function handleWheelchairScan(value: string) {
-    console.log('Scanned wheelchair QR:', value)
+  function handleAreaScan(scannedArea: string) {
+    console.log('Scanned area:', scannedArea)
 
-    // For now, no search params. Just move to next mock step.
-    router.push('/area')
+    if (normalize(scannedArea) === normalize(MOCK_WHEELCHAIR.correctArea)) {
+      router.replace('/success')
+    } else {
+      router.replace('/wrong')
+    }
   }
 
   return (
@@ -31,7 +38,7 @@ export default function WheelchairScanPage() {
         <section>
           <ScannerBox
             mode="qr"
-            onValue={handleWheelchairScan}
+            onValue={handleAreaScan}
             className="mt-6 aspect-square w-5/6 mx-auto"
           />
         </section>
@@ -42,11 +49,11 @@ export default function WheelchairScanPage() {
           </span>
 
           <h1 className="mt-6 text-3xl font-black tracking-tight">
-            Scan wheelchair QR code
+            Scan area QR code
           </h1>
 
           <p className="mt-2 max-w-sm text-base leading-relaxed text-white/55">
-            Point your camera at the QR label attached to the chair.
+            Now scan the QR code posted in the room or hallway.
           </p>
         </section>
 
@@ -57,12 +64,14 @@ export default function WheelchairScanPage() {
           />
         </section>
 
-        <div className="flex justify-center items-center gap-2 mt-6">
-          <span className="text-red-400">
-            <CircleQuestionMarkIcon className="h-4 w-4" />
-          </span>
-          <p className="text-base text-center text-white/40 ">
-            Need help finding the QR code?
+        <div className="mt-6">
+          <p className="text-base text-center text-white/40 flex justify-center items-center gap-2">
+            <span className="text-red-400 ">
+              <InfoIcon className="h-4 w-4" />
+            </span>
+            <span className="gap-2 justify-center items-center">
+              Having trouble?
+            </span>
           </p>
         </div>
       </div>

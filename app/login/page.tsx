@@ -1,67 +1,60 @@
 'use client'
 
-import { Scanner } from '@yudiel/react-qr-scanner'
-import { useEffect, useState } from 'react'
-import { useAuth } from '../provider'
 import { useRouter } from 'next/navigation'
+import { useAuth } from '../provider'
+import ScannerBox from '@/components/scannerbox'
+import { ArrowUpRightIcon, IdCardLanyardIcon } from 'lucide-react'
 
 export default function LoginPage() {
-  const { user, login } = useAuth()
   const router = useRouter()
-  const [paused, setPaused] = useState(false)
+  const { login } = useAuth()
 
-  useEffect(() => {
-    if (user) {
-      router.replace('/')
-    }
-  }, [user, router])
+  function handleBadgeScan(badgeId: string) {
+    login(badgeId)
+    router.replace('/wheelchair')
+  }
 
   return (
-    <div className="flex flex-col items-center mx-4 mt-24">
-      <h1 className="text-2xl font-bold text-center">
-        Good morning, please scan your badge to log in
-      </h1>
+    <main className="h-auto bg-black px-5 text-white">
+      <div className="mx-auto flex min-h-screen max-w-md flex-col">
+        <section className="mt-6 text-center">
+          <h1 className="text-4xl font-black tracking-tight">Good morning</h1>
+          <p className="mt-2 text-xl text-white/60">
+            Scan your badge to log in
+          </p>
+        </section>
 
-      <div className="mt-12 w-full max-w-xl h-40 overflow-hidden rounded-2xl">
-        <Scanner
-          formats={[
-            'code_128',
-            'code_39',
-            'code_93',
-            'ean_13',
-            'ean_8',
-            'upc_a',
-            'upc_e',
-          ]}
-          constraints={{
-            facingMode: 'environment',
-          }}
-          paused={paused}
-          onScan={(results) => {
-            const badgeId = results[0]?.rawValue
-
-            if (!badgeId) return
-
-            setPaused(true)
-            login(badgeId)
-            router.replace('/')
-          }}
-          onError={(error) => {
-            console.log("Can't read it", error)
-          }}
-          styles={{
-            container: {
-              width: '100%',
-              height: '100%',
-            },
-            video: {
-              width: '100%',
-              height: '100%',
-              objectFit: 'cover',
-            },
-          }}
+        <ScannerBox
+          mode="barcode"
+          onValue={handleBadgeScan}
+          className="mt-10 h-80 w-full"
         />
+
+        <section className="mt-8 rounded-4xl border border-white/10 bg-white/4 p-6">
+          <div className="flex items-center gap-5">
+            <div className="flex h-20 w-20 items-center justify-center rounded-full border border-white/10 bg-black/40 text-xl">
+              <IdCardLanyardIcon />
+            </div>
+
+            <div>
+              <p className="font-semibold">Use your staff badge barcode</p>
+              <p className="mt-1 text-white/45">
+                Position the barcode within the frame to scan automatically.
+              </p>
+            </div>
+          </div>
+        </section>
+
+        <p className="mt-10 text-center text-white/45">
+          Having trouble scanning?{' '}
+          <a href="#" className="hover:cursor-pointer">
+            <span className="flex justify-center items-center text-red-400 gap-0.5">
+              <span className="text-red-400">Tap here for help</span>
+              <ArrowUpRightIcon className="h-4 w-4" />
+            </span>
+          </a>
+        </p>
       </div>
-    </div>
+    </main>
   )
 }
