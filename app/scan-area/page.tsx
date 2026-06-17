@@ -2,34 +2,33 @@
 
 import { useRouter } from 'next/navigation'
 import { useAuth } from '../provider'
-import { MOCK_USER, MOCK_WHEELCHAIR } from '../mock-data'
 import ScannerBox from '@/components/scannerbox'
-import WheelchairCard from '@/components/wheelchair/wheelchair-card'
 import { InfoIcon, MapPinIcon } from 'lucide-react'
-import { useState } from 'react'
-import HospitalViewer from '@/components/hopsital/hospital-viewer'
+import { useEffect, useState } from 'react'
+import { Wheelchair } from '../mock-data'
 
-function normalize(value: string) {
-  return value.trim().toLowerCase().replaceAll('-', ' ')
-}
-
-export default function AreaScanPage() {
+export default function ScanAreaPage() {
   const router = useRouter()
   const { user } = useAuth()
-
+  const [wheelchair, setWheelchair] = useState<Wheelchair | null>(null)
   const [here, setHere] = useState(false)
 
-  const badgeId = user?.badgeId ?? MOCK_USER.badgeId
-  const badgeEnding = badgeId.slice(-4)
+  useEffect(() => {
+    const currentWheelchair = sessionStorage.getItem('currentWheelchair')
+    if (currentWheelchair) {
+      setWheelchair(JSON.parse(currentWheelchair))
+    }
+  }, [])
+
+  const badgeEnding = user?.badgeId.slice(-4)
 
   function handleAreaScan(scannedArea: string) {
     console.log('Scanned area:', scannedArea)
 
-    if (normalize(scannedArea) === normalize(MOCK_WHEELCHAIR.correctArea)) {
-      router.replace('/success')
-    } else {
-      router.replace('/wrong')
-    }
+    const isCorrectArea = scannedArea === wheelchair?.assignedArea
+    router.push(
+      `/confirmation?isCorrectArea=${isCorrectArea}&assignedArea=${wheelchair?.assignedArea}&scannedArea=${scannedArea}`,
+    )
   }
 
   return (
@@ -40,21 +39,6 @@ export default function AreaScanPage() {
         </p>
         {here ? (
           <>
-            <section className="mt-4">
-              <WheelchairCard
-                wheelchairId={MOCK_WHEELCHAIR.name}
-                correctArea={MOCK_WHEELCHAIR.modelNumber}
-              />
-            </section>
-
-            <section>
-              <ScannerBox
-                mode="qr"
-                onValue={handleAreaScan}
-                className="mt-6 aspect-square w-5/6 mx-auto"
-              />
-            </section>
-
             <section className="mt-8">
               <span className="rounded-full border border-white/10 bg-white/4 px-4 py-2 text-sm font-medium text-red-400">
                 Step 2 of 2
@@ -67,6 +51,14 @@ export default function AreaScanPage() {
               <p className="mt-2 max-w-sm text-base leading-relaxed text-white/55">
                 Now scan the QR code posted in the room or hallway.
               </p>
+            </section>
+
+            <section>
+              <ScannerBox
+                mode="qr"
+                onValue={handleAreaScan}
+                className="mt-6 aspect-square w-5/6 mx-auto"
+              />
             </section>
 
             <div className="mt-6">
@@ -82,12 +74,11 @@ export default function AreaScanPage() {
           </>
         ) : (
           <div className="flex flex-col items-center justify-between gap-3 text-center mt-24">
-            <HospitalViewer />
-            {/* <MapPinIcon className="h-36 w-36 text-red-500/65 " /> */}
+            <MapPinIcon className="h-36 w-36 text-red-500/65 " />
             <p className="text-2xl">
               Please make your way to{' '}
               <span className="text-red-500 font-bold whitespace-nowrap">
-                ICU North
+                {wheelchair?.assignedArea}
               </span>
             </p>
             <button
@@ -96,9 +87,6 @@ export default function AreaScanPage() {
             >
               I'm Here
             </button>
-            <div className="mt-28 ">
-              <WheelchairCard />
-            </div>
           </div>
         )}
       </div>

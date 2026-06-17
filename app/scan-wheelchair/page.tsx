@@ -1,48 +1,46 @@
 'use client'
 
-import { MOCK_USER, MOCK_WHEELCHAIR } from '@/app/mock-data'
 import { useAuth } from '@/app/provider'
 import ScannerBox from '@/components/scannerbox'
-import WheelchairCard from '@/components/wheelchair/wheelchair-card'
-import WheelchairViewer from '@/components/wheelchair/wheelchair-viewer'
 import { CircleQuestionMarkIcon } from 'lucide-react'
 import { useRouter } from 'next/navigation'
+import { MOCK_WHEELCHAIRS } from '../mock-data'
 
-export default function WheelchairScanPage() {
+export default function ScanWheelchairPage() {
   const router = useRouter()
   const { user } = useAuth()
 
-  const badgeId = user?.badgeId ?? MOCK_USER.badgeId
-  const badgeEnding = badgeId.slice(-4)
+  const badgeEnding = user?.badgeId.slice(-4)
 
-  function handleWheelchairScan(value: string) {
-    console.log('Scanned wheelchair QR:', value)
+  function handleWheelchairScan(wheelchairId: string) {
+    const wheelchair = MOCK_WHEELCHAIRS.find((wc) => wc.id === wheelchairId)
+    if (wheelchair) {
+      sessionStorage.setItem('currentWheelchair', JSON.stringify(wheelchair))
 
-    // For now, no search params. Just move to next mock step.
-    router.push('/area')
+      console.log(
+        `Wheelchair ${wheelchair?.name} belongs to ${wheelchair?.assignedArea}`,
+      )
+      router.push('/scan-area')
+    } else {
+      router.push('/scan-wheelchair')
+      throw new Error(
+        'This wheelchair could not be identified. Please try again',
+      )
+    }
   }
 
   return (
     <main className="h-full bg-black px-5 text-white">
       <div className="mx-auto max-w-md">
         <p className="text-center text-white/60 mt-2">
-          Logged in as Badge •••{badgeEnding}
+          Logged in as, •••{badgeEnding}
         </p>
 
-        <span className="relative flex size-3 left-51 top-12 z-10">
+        {/* Pulsing dot */}
+        {/* <span className="relative flex size-3 left-51 top-12 z-10">
           <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-red-400/75"></span>
           <span className="relative inline-flex size-3 rounded-full bg-red-500/80"></span>
-        </span>
-
-        <WheelchairViewer isWheelchairPage={true} />
-
-        <section>
-          <ScannerBox
-            mode="qr"
-            onValue={handleWheelchairScan}
-            className="mt-6 aspect-square w-5/6 mx-auto"
-          />
-        </section>
+        </span> */}
 
         <section className="mt-8">
           <span className="rounded-full border border-white/10 bg-white/4 px-4 py-2 text-sm font-medium text-red-400">
@@ -56,6 +54,14 @@ export default function WheelchairScanPage() {
           <p className="mt-2 max-w-sm text-base leading-relaxed text-white/55">
             Point your camera at the QR label attached to the chair.
           </p>
+        </section>
+
+        <section>
+          <ScannerBox
+            mode="qr"
+            onValue={handleWheelchairScan}
+            className="mt-6 aspect-square w-5/6 mx-auto"
+          />
         </section>
 
         <div className="flex justify-center items-center gap-2 mt-6">

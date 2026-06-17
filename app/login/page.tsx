@@ -1,17 +1,13 @@
 'use client'
 
-import { useRouter } from 'next/navigation'
 import { useAuth } from '../provider'
 import ScannerBox from '@/components/scannerbox'
 import { ArrowUpRightIcon, IdCardLanyardIcon } from 'lucide-react'
 
 export default function LoginPage() {
-  const router = useRouter()
   const { login } = useAuth()
-
   function handleBadgeScan(badgeId: string) {
     login(badgeId)
-    router.replace('/wheelchair')
   }
 
   return (
@@ -26,7 +22,7 @@ export default function LoginPage() {
 
         <ScannerBox
           mode="barcode"
-          onValue={handleBadgeScan}
+          onValue={(value) => handleBadgeScan(value)}
           className="mt-10 h-80 w-full"
         />
 

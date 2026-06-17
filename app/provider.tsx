@@ -1,5 +1,6 @@
 'use client'
 
+import { MOCK_USERS, User } from './mock-data'
 import { useRouter } from 'next/navigation'
 import {
   createContext,
@@ -8,10 +9,6 @@ import {
   useEffect,
   useState,
 } from 'react'
-
-type User = {
-  badgeId: string
-}
 
 type AuthContextType = {
   user: User | null
@@ -38,10 +35,18 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   }, [])
 
   function login(badgeId: string) {
-    const newUser = { badgeId }
+    const newUser = MOCK_USERS.find((mockUser) => mockUser.badgeId === badgeId)
 
-    setUser(newUser)
-    sessionStorage.setItem('currentUser', JSON.stringify(newUser))
+    if (newUser) {
+      setUser(newUser)
+      sessionStorage.setItem('currentUser', JSON.stringify(newUser))
+      router.push('/scan-wheelchair')
+    } else {
+      router.push('/')
+      throw new Error(
+        'No user found, please check that the user is in the database and that the badgeId is correct',
+      )
+    }
   }
 
   function logout() {

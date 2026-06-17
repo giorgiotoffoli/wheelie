@@ -9,8 +9,6 @@
     "lint": "eslint"
   },
   "dependencies": {
-    "@react-three/drei": "^10.7.7",
-    "@react-three/fiber": "^9.6.1",
     "@thewirv/react-barcode-scanner": "^3.4.0",
     "@yudiel/react-qr-scanner": "^2.6.0",
     "lucide-react": "^1.18.0",

@@ -8,6 +8,6 @@ export default function Home() {
   if (!user) {
     redirect('/login')
   } else {
-    redirect('/wheelchair')
+    redirect('/scan-wheelchair')
   }
 }
