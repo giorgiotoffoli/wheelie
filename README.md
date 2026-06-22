@@ -1,8 +1,4 @@
-<p align="center">
-  <img src="public/wheelie.png" alt="Wheelie app logo">
-</p>
-
-# Wheelie
+# ♿︎ Wheelie
 
 An app to gamify Wheelchair Location improvement.
 
