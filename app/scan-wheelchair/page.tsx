@@ -42,6 +42,14 @@ export default function ScanWheelchairPage() {
           <span className="relative inline-flex size-3 rounded-full bg-red-500/80"></span>
         </span> */}
 
+        <section>
+          <ScannerBox
+            mode="qr"
+            onValue={handleWheelchairScan}
+            className="mt-6 aspect-square w-5/6 mx-auto"
+          />
+        </section>
+
         <section className="mt-8">
           <span className="rounded-full border border-white/10 bg-white/4 px-4 py-2 text-sm font-medium text-red-400">
             Step 1 of 2
@@ -54,14 +62,6 @@ export default function ScanWheelchairPage() {
           <p className="mt-2 max-w-sm text-base leading-relaxed text-white/55">
             Point your camera at the QR label attached to the chair.
           </p>
-        </section>
-
-        <section>
-          <ScannerBox
-            mode="qr"
-            onValue={handleWheelchairScan}
-            className="mt-6 aspect-square w-5/6 mx-auto"
-          />
         </section>
 
         <div className="flex justify-center items-center gap-2 mt-6">

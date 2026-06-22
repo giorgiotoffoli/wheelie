@@ -39,6 +39,14 @@ export default function ScanAreaPage() {
         </p>
         {here ? (
           <>
+            <section>
+              <ScannerBox
+                mode="qr"
+                onValue={(value) => handleAreaScan(value)}
+                className="mt-6 aspect-square w-5/6 mx-auto"
+              />
+            </section>
+
             <section className="mt-8">
               <span className="rounded-full border border-white/10 bg-white/4 px-4 py-2 text-sm font-medium text-red-400">
                 Step 2 of 2
@@ -51,14 +59,6 @@ export default function ScanAreaPage() {
               <p className="mt-2 max-w-sm text-base leading-relaxed text-white/55">
                 Now scan the QR code posted in the room or hallway.
               </p>
-            </section>
-
-            <section>
-              <ScannerBox
-                mode="qr"
-                onValue={(value) => handleAreaScan(value)}
-                className="mt-6 aspect-square w-5/6 mx-auto"
-              />
             </section>
 
             <div className="mt-6">
