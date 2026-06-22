@@ -68,6 +68,7 @@ export default function ScanWheelchairPage() {
           <span className="text-red-400">
             <CircleQuestionMarkIcon className="h-4 w-4" />
           </span>
+
           <p className="text-base text-center text-white/40 ">
             Need help finding the QR code?
           </p>

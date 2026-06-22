@@ -3,7 +3,7 @@
 import { ArrowRightIcon, CheckIcon, TriangleAlertIcon } from 'lucide-react'
 import { useRouter, useSearchParams } from 'next/navigation'
 
-export default function ConfirmationPage() {
+export default function ConfirmationContet() {
   const router = useRouter()
   const params = useSearchParams()
 
@@ -14,7 +14,7 @@ export default function ConfirmationPage() {
   const isCorrect = 'true' === isCorrectArea
 
   return (
-    <main className="min-h-screen bg-black px-5 py-10 text-white">
+    <main className="max-h-screen bg-black px-5 py-10 text-white">
       <div className="mx-auto max-w-md">
         <section className="mt-14 text-center">
           <div
@@ -31,9 +31,9 @@ export default function ConfirmationPage() {
             {isCorrect ? 'Thank you!' : 'Wrong area'}
           </h1>
 
-          <p className="mt-4 text-lg leading-relaxed text-white/55">
+          <p className="m-4 text-lg leading-relaxed text-white/55">
             {isCorrect
-              ? "You've been awarded 5pts for your hard work!"
+              ? "You've been awarded 5 points for your hard work!"
               : 'This wheelchair appears to be in the wrong location.'}
           </p>
         </section>
@@ -56,7 +56,7 @@ export default function ConfirmationPage() {
           }
           className={`mt-8 w-full rounded-2xl ${isCorrect ? 'bg-green-500' : 'bg-red-500'} px-6 py-5 text-xl font-bold text-white shadow-lg shadow-red-500/20`}
         >
-          Scan another area
+          {isCorrect ? 'Scan another wheelchair' : 'Try again'}
         </button>
 
         <button className="mt-4 w-full rounded-2xl border border-white/10 bg-white/4 px-6 py-5 text-xl font-bold text-white flex justify-center items-center gap-2">

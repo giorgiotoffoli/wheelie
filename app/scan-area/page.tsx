@@ -32,7 +32,7 @@ export default function ScanAreaPage() {
   }
 
   return (
-    <main className="h-full bg-black px-5 text-white">
+    <main className="max-h-screen bg-black px-5 text-white">
       <div className="mx-auto max-w-md">
         <p className="text-center text-white/60 mt-2">
           Logged in as Badge •••{badgeEnding}
@@ -56,7 +56,7 @@ export default function ScanAreaPage() {
             <section>
               <ScannerBox
                 mode="qr"
-                onValue={handleAreaScan}
+                onValue={(value) => handleAreaScan(value)}
                 className="mt-6 aspect-square w-5/6 mx-auto"
               />
             </section>
@@ -73,7 +73,7 @@ export default function ScanAreaPage() {
             </div>
           </>
         ) : (
-          <div className="flex flex-col items-center justify-between gap-3 text-center mt-24">
+          <div className="max-h-full flex flex-col items-center justify-around gap-3 text-center mt-24 mx-12">
             <MapPinIcon className="h-36 w-36 text-red-500/65 " />
             <p className="text-2xl">
               Please make your way to{' '}

@@ -11,8 +11,8 @@ export default function LoginPage() {
   }
 
   return (
-    <main className="h-auto bg-black px-5 text-white">
-      <div className="mx-auto flex min-h-screen max-w-md flex-col">
+    <main className="flex flex-col max-h-screen bg-black px-5 text-white">
+      <div className="mx-auto  max-w-md flex-col">
         <section className="mt-6 text-center">
           <h1 className="text-4xl font-black tracking-tight">Good morning</h1>
           <p className="mt-2 text-xl text-white/60">
