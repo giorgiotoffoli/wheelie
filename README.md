@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="src/app/apple-icon.png" alt="Wheelie app logo">
+  <img src="public/wheelie.png" alt="Wheelie app logo">
 </p>
 
 # Wheelie
